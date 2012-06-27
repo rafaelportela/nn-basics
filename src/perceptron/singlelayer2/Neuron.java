@@ -14,7 +14,7 @@ public class Neuron {
 		this.synapticWeights = synapticWeights;
 	}
 	
-	private void setInputs(double[] input) {
+	public void setInputs(double[] input) {
 		this.inputs = input;
 		
 	}
@@ -30,11 +30,19 @@ public class Neuron {
 	 * @param desiredResponse
 	 * @return
 	 */
-	public Neuron train(double[] input, double desiredResponse) {
+	public Neuron train(double[] input, double desiredResponse, double learningRate) {
 		setInputs(input);
-		setError(desiredResponse = run());
+		setError( (desiredResponse - run()) * learningRate);
 		
+		updateWeights();
+				
 		return this;
+	}
+	
+	private void updateWeights() {
+		for (int i=0; i<synapticWeights.length; i++) {
+			synapticWeights[i] += getError();
+		}		
 	}
 
 	private void setError(double error) {
